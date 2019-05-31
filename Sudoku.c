@@ -8,7 +8,7 @@ typedef struct lista {
 } Lista;
 
 typedef struct coluna {
-    Lista *l1;
+    Lista *l;
     Lista *prox;
 } Coluna;
 
