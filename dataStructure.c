@@ -1,46 +1,58 @@
+// After compiling the code, type in the terminal "./a.out" + the example file's path (for linux)
 #include<stdio.h>
 #include<stdlib.h>
 
-int** criaMatDin(int l, int c){
-	int** matDin = (int**) malloc(l * sizeof(int*));
-	for(int i = 0; i < l; i++)
-		matDin[i] = (int*) malloc(c * sizeof(int));
-	return matDin;
+// Returns a dynamic matrix
+int** createMat(){
+	int** mat = (int**) malloc(9 * sizeof(int*));
+	for(int i = 0; i < 9; i++)
+		mat[i] = (int*) malloc(9 * sizeof(int));
+	return mat;
 }
 
-int** preencheMatDin(int** matDin, int l, int c){
-	for(int i = 0; i < l; i++)
-		for(int j = 0; j < c; j++)
-			scanf("%d", &matDin[i][j]);
-	return matDin;
+// Returns the matrix filled by the characters in the read file
+int** fillMat(int** mat, char* filePath){
+	FILE* file = fopen(filePath, "r");
+	if(file == NULL){
+        perror("Erro: fopen");
+        exit(EXIT_FAILURE);
+    }
+	int i, j;
+	char c;
+	for(i = 0; i < 9; i++){
+		for(j = 0; j < 9; j++){
+			c = fgetc(file);
+			mat[i][j] = '0' - c;
+			c = fgetc(file);
+		}
+	}
+	return mat;
 }
 
-void imprimeMatDin(int** matDin, int l, int c){
-	for(int i = 0; i < l; i++){
-		if (matDin == NULL){
+// Prints the matrix
+void print(int** mat){
+	for(int i = 0; i < 9; i++){
+		if (mat == NULL){
 			printf("NULL\n");
 			break;
 		}
-		for(int j = 0; j < c; j++)
-			printf("%d ", matDin[i][j]);
+		for(int j = 0; j < 9; j++)
+			printf("%d ", mat[i][j]);
 		printf("\n");
 	}
 }
 
-int** liberaMatDin(int** matDin, int l){
-	for(int i = 0; i < l; i++)
-		free(matDin[i]);
-	free(matDin);
+// Frees the memory where the matrix was allocated
+int** freeMat(int** mat){
+	for(int i = 0; i < 9; i++)
+		free(mat[i]);
+	free(mat);
 	return NULL;
 }
 
-void main(){
-	int l, c;
-	scanf("%d", &l);
-	scanf("%d", &c);
-	int** sudoku = criaMatDin(l, c);
-	sudoku = preencheMatDin(sudoku, l, c);
-	imprimeMatDin(sudoku, l, c);
-	sudoku = liberaMatDin(sudoku, l);
-	imprimeMatDin(sudoku, l, c);
+void main(int argc, char* argv[]){
+	int** sudoku = createMat();
+	sudoku = fillMat(sudoku, argv[1]);
+	print(sudoku);
+	sudoku = freeMat(sudoku);
 }
