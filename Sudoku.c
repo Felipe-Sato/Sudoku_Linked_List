@@ -1,42 +1,63 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct lista {
-    int info;
-    struct lista *prox;
-    struct lista *ant;
-} Lista;
-
-typedef struct coluna {
-    Lista *l;
-    Lista *prox;
-} Coluna;
-
-Lista *criaLinha (Lista *Ref) {
-	Lista *new = (Lista*)malloc(sizeof(Lista));
-	new->info = 0;
-	new->ant = NULL;
-	new->prox = Ref;
-	if (Ref != NULL) {
-		Ref->ant = new;
-	}
-	return new;
-}
-
-Lista *criaQualquerLugar(Lista Ref, int pos, int valor) {
-    Lista *new = (Lista*)malloc(sizeof(Lista));
-    new->info = valor;
-    if (pos == 1)
-    {
-        /* code */
+// check line
+void checkLine (int **M, int i, int j, int valor) {
+    if (i < 9 && j < 9) {
+        if (M[i][j] < 0) {
+            checkLine(M, i++, j, valor);
+        } else {
+            int k;
+            for (k = 0; k < 9; k++) {
+                if (M[i][j] == M[k][j] || M[i][j] == (-1)*(M[k][j])) {
+                    M[i][j] = 0;
+                } else {
+                    M[i][j] = valor;
+                }
+            }
+            checkLine(M, i++, j, valor++);            
+        }
+    } else {
+        checkLine(M, i++, j++, valor++);
     }
-    
-
+}
+// check collumn
+void checkCollumn (int **M, int i, int j, int valor) {
+    if (i < 9 && j < 9) {
+        if (M[i][j] < 0) {
+            checkCollumn(M, i, j++, valor);
+        } else {
+            int k;
+            for (k = 0; k < 9; k++) {
+                if (M[i][j] == M[i][k] || M[i][j] == (-1)*(M[i][k])) {
+                    M[i][j] = 0;
+                } else {
+                    M[i][j] = valor;
+                }
+            }
+            checkCollumn(M, i++, j, valor++);            
+        }
+    } else {
+        checkCollumn(M, i++, j++, valor++);
+    }
 }
 
-int main(int argc, char const *argv[])
-{
-    Coluna *C = (Coluna*)malloc(sizeof(Coluna));
-    C = NULL;
-    return 0;
+// In progress...:
+// check quadrant
+void checkQuadrant (int **M, int i, int j, int valor) {
+    if (i < (i+3) && j < (j+3)) {
+        int k = 0;
+        for (i = 0; i < (i+3); i++) {
+            if (M[i][k] == M[i][j] || M[i][k] == ((-1)*M[i][j])) {
+                M[i][k] = 0;
+            }
+            ++k;
+            ++j;
+        }
+    }
 }
+
+// check quadrant line
+
+// check quadrant collumn
+
