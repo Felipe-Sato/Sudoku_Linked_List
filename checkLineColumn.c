@@ -41,6 +41,6 @@ void checkLineColumn(int **M, int l, int c){
 			if(sqrt(pow(M[l][i],2)) == k || sqrt(pow(M[i][c],2)) == k) break;	
 		if(i == 9) candidates = addList(candidates, k);
 	}
-	printList(candidates);
+	if(candidates->prox == NULL) M[l][c] = candidates->info;
 	free(candidates);
 }
