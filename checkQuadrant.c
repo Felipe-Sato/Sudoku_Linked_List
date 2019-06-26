@@ -13,6 +13,15 @@ List *addElement(List *L, int data) {
     return new;
 }
 
+void printList(List *L) { 
+	if (L != NULL) {
+		printf("%i\n", L->info);
+		printList(L->prox);
+	} else {
+		printf("Empty List\n");
+	}
+}
+
 List *remElement(List *L, int data) {
 	// empy list
 	if (L == NULL) {
@@ -32,7 +41,7 @@ List *remElement(List *L, int data) {
 				free(aux);
 			} else {
 				// updating aux
-				ant = aux;
+				ant = L;
 				aux = aux->prox;
 				// searching
 				while (aux->prox != NULL && aux->info != data ) {
@@ -59,14 +68,7 @@ List *remElement(List *L, int data) {
 	}
 }
 
-void printList(List *L) { 
-	if (L != NULL) {
-		printf("%i\n", L->info);
-		printList(L->prox);
-	} else {
-		printf("Empty List\n");
-	}
-}
+
 // this function will allow only the coodnates of i, j of new quadrants
 int possibleQuadrant(int i, int j) {
 	if (i == 0 || i == 3 || i == 6) {
@@ -91,36 +93,6 @@ List *equalElement(List *L, int data) {
 		L = equalElement(L->prox, data);
 	}
 	return L;
-}
-
-// the functon will return a struct type List with all elements that are possible to be inserted in the quadrant
-List *checkQuadrant(int **M, int i, int j) {
-	int di = i+3, dj = j+3;
-	int p = j;
-	List *L = NULL;
-	List *resp = NULL;
-	L = addElement(L, 9);
-	L = addElement(L, 8);
-	L = addElement(L, 7);
-	L = addElement(L, 6);
-	L = addElement(L, 5);
-	L = addElement(L, 4);
-	L = addElement(L, 3);
-	L = addElement(L, 2);
-	L = addElement(L, 1);
-	printf("\n");
-
-	for ( i = i; i < di; i++) {
-		for ( j = p; j < dj; j++) {
-			printf("%i\t", M[i][j]);
-			if (M[i][j] != 0) {
-				resp = equalElement(L, M[i][j]);
-			} else {
-				resp = L;
-			}
-		}
-	}
-	return resp;
 }
 
 void main(int argc, char* argv[]){
